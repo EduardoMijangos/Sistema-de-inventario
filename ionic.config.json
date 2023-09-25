@@ -1,0 +1,7 @@
+{
+  "name": "appintegral",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
