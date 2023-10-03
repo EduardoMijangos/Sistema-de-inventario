@@ -1,0 +1,92 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+
+      <ion-text class="ion-text-center" color="dark">
+        <h3>Nuevo producto </h3>
+      </ion-text>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="close()" fill="clear">
+          <ion-icon  slot="icon-only" name="close"></ion-icon>
+         </ion-button>
+      </ion-buttons>
+
+    </ion-toolbar>
+
+
+  </ion-header>
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-label >Nombre</ion-label>
+       <ion-input
+          fill="outline"
+          placeholder=" Nombre de producto"></ion-input>
+      </ion-col>
+      <ion-col size="12">
+        <ion-label >Imagen del producto</ion-label>
+        <ion-input
+            type="file"
+           fill="outline"
+           placeholder=" Nombre de producto"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label >Codigo</ion-label>
+        <ion-input
+
+           fill="outline"
+           placeholder=" Nombre de producto"></ion-input>
+      </ion-col>
+      <ion-col size="6">
+          <ion-label>Categoria</ion-label>
+          <ion-select value="peperoni" multiple="true" placeholder="Select Pizza">
+            <ion-select-option value="abarrotes">abarrotes</ion-select-option>
+            <ion-select-option value="frutas">frutas</ion-select-option>
+            <ion-select-option value="verduras">verduras</ion-select-option>
+          </ion-select>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-label >Precio</ion-label>
+        <ion-input
+        type="number"
+           fill="outline"
+           placeholder=" Precio"></ion-input>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label >Stock</ion-label>
+        <ion-input
+        type="number"
+           fill="outline"
+           placeholder=" Stock"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-label >Adquisición</ion-label>
+        <ion-input
+        type="date"
+           fill="outline"
+           placeholder=" Adquisicion"></ion-input>
+      </ion-col>
+      <ion-col size="12">
+        <ion-label >Fecha de vencimiento</ion-label>
+        <ion-input
+        type="date"
+           fill="outline"
+           placeholder=" Vencimiento"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-button  expand="block"  >
+     Guardar
+    </ion-button>
+  </ion-grid>
+
+
+
+</ion-content>
