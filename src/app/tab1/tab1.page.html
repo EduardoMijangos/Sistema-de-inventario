@@ -25,7 +25,7 @@
   <ion-card>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
-        <p>{{prod.name}}</p>
+        <p>{{prod.name.length > 18 ? prod.name.substr(0,15) + '...' : prod.name}}</p>
         <ion-icon *ngIf="prod.stock > 0"  color="success" slot="end" name="checkmark-circle"></ion-icon>
         <ion-icon *ngIf="prod.stock === 0"  color="danger" slot="end" name="close-circle"></ion-icon>
       </ion-item>

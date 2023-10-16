@@ -1,0 +1,51 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+
+      <ion-text class="ion-text-center" color="dark">
+        <h3>Nueva Categoria </h3>
+      </ion-text>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="close()" fill="clear">
+          <ion-icon  slot="icon-only" name="close"></ion-icon>
+         </ion-button>
+      </ion-buttons>
+
+    </ion-toolbar>
+
+
+  </ion-header>
+  <ion-content>
+
+    <form [formGroup]="formCategory" (ngSubmit)="submit()" >
+
+    <ion-grid >
+      <ion-row>
+        <ion-col size="12">
+          <ion-label >Nombre de la categoria</ion-label>
+         <ion-input
+            formControlName="name"
+            fill="outline"
+            placeholder=" Nombre de categoria"></ion-input>
+            <small *ngIf="validaCtrl('name')" style="color: red;">
+              El nombre es obligatorio </small>
+          </ion-col>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Color</ion-label>
+            <ion-select mode="md"  formControlName="color"  placeholder="Elije un color">
+              <ion-select-option [value]="color" *ngFor="let color of colores" value="primary">{{color}}</ion-select-option>
+            </ion-select>
+            <small *ngIf="validaCtrl('color')" style="color: red;">
+              El color es obligatorio </small>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-button type="submit" expand="block" >
+      Guardar
+    </ion-button>
+  </form>
+
+  </ion-content>
