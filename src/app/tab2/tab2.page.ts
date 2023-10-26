@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NewProductComponent } from '../components/new-product/new-product.component';
 import { ViewProductComponent } from '../components/view-product/view-product.component';
@@ -12,7 +12,7 @@ import { ProductsService } from '../services/products.service';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
   titulo = 'Mis productos';
   categories: any[] = [];
   products: any[] = [];
@@ -23,12 +23,21 @@ export class Tab2Page {
     private modalCtrl: ModalController,
     private _categoryService: CategoriesService,
     private _productService: ProductsService
-  ) {
-    this._categoryService.getNewCategory.subscribe( category => {
-      if (category){
+  ) {  }
+
+  ngOnInit() {
+    this._categoryService.getNewCategory.subscribe((category: any) => {
+      if (category) {
         this.categories.push(category);
       }
-    } )
+    });
+
+    this._productService.getNewProduct.subscribe((product: any) => {
+      if (product) {
+        this.products.push(product);
+      }
+    });
+
     this.getProducts();
     this.getCategorias();
   }
@@ -56,6 +65,7 @@ export class Tab2Page {
   }
 
   getProducts(){
+    this.products = [];
     this._productService.getProducts().subscribe( (resp: any) => {
       console.log('Products', resp);
       this.products = resp;
@@ -71,7 +81,9 @@ export class Tab2Page {
   async openNewProduct(){
     const modal = await this.modalCtrl.create({
       component: NewProductComponent,
-      mode: 'ios'
+      mode: 'ios',
+      initialBreakpoint: .9,
+      backdropDismiss:false,
     });
     await modal.present();
   }

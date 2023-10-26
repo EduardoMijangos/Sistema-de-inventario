@@ -71,15 +71,15 @@ export class Tab1Page {
   masVendidos:productSlide[] = [
     {
       id: 1,
-      imagen:'https://img.freepik.com/vector-gratis/fondo-producto-cosmetico_52683-205.jpg?size=626&ext=jpg&ga=GA1.1.1012331098.1695747427&semt=sph'
+      imagen:'https://phantom-marca-mx.unidadeditorial.es/e560a6000ff2992f5f77b8cbe28501c1/resize/660/f/webp/mx/assets/multimedia/imagenes/2023/08/24/16928967299523.jpg'
     },
     {
       id: 2,
-      imagen:'https://img.freepik.com/psd-gratis/venta-zapatos-publicacion-redes-sociales-o-diseno-plantilla-banner-cuadrado_505751-3735.jpg?size=626&ext=jpg&ga=GA1.1.1012331098.1695747427&semt=sph'
+      imagen:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXhaiP1N10lhwHnk1lc6z9m2UGdIzlGwck3eTgEQu15WffNBxUSQas1W4qOyygYkYL1FA&usqp=CAU'
     },
     {
       id: 3,
-      imagen:'https://img.freepik.com/psd-gratis/plantilla-banner-redes-sociales-super-venta-viernes-negro_106176-1477.jpg?size=626&ext=jpg&ga=GA1.1.1012331098.1695747427&semt=sph'
+      imagen:'https://images.theconversation.com/files/460981/original/file-20220503-24-n4sj7e.png?ixlib=rb-1.1.0&q=45&auto=format&w=754&h=346&fit=crop&dpr=1'
     }
   ]
 
