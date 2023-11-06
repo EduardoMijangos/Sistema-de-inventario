@@ -1,3 +1,27 @@
-img {
-  border-radius: 10px !important;
+ion-header {
+  ion-toolbar {
+    --ion-background-color: #3880ff; /* Cambia el color de fondo de la barra superior */
+    ion-title {
+      color: #fff; /* Cambia el color del título */
+    }
+  }
+
+  ion-icon {
+    color: #fff; /* Cambia el color del icono de cierre */
+  }
+}
+
+ion-img {
+  max-width: 30%;
+  height: auto;
+  display: block; /* Para centrar horizontalmente */
+  margin: 0 auto; /* Para centrar horizontalmente */
+}
+
+.label-bold {
+  font-weight: bold;
+}
+
+.label-capitalized {
+  text-transform: capitalize;
 }

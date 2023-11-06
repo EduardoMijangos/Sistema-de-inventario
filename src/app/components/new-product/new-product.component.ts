@@ -5,6 +5,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { ProductsService } from 'src/app/services/products.service';
+import { caducidadValid } from 'src/app/validators/caducidad.Validators';
 import { priceValid } from 'src/app/validators/price.Validators'; // Renombré el archivo a "price.validators"
 
 @Component({
@@ -17,6 +18,7 @@ export class NewProductComponent implements OnInit {
   currentFile: Blob[] = []; // Cambié el tipo de "any[]" a "Blob[]"
   categorias: any[] = [];
   formProduct!: FormGroup;
+  caduca: boolean = false;
 
   constructor(
     private modalCtrl: ModalController,
@@ -39,12 +41,12 @@ export class NewProductComponent implements OnInit {
       price: [0, Validators.required],
       price_sale: [0, Validators.required],
       stock: [0, Validators.required],
-      expired: [, Validators.required],
+      expired: [null],
       image: [],
       category_id: [0, Validators.required],
     },
     {
-      validators: priceValid,
+      validators: [priceValid, caducidadValid],
     });
   }
 
@@ -122,6 +124,7 @@ export class NewProductComponent implements OnInit {
 
     this._productService.newProduct(formdata).subscribe((newProduct) => {
       console.log('Nuevo producto:', newProduct); // Verifica los datos del nuevo producto
+      // this._productService.setNewProduct(newProduct); 
       if (newProduct) {
         this._productService.setNewProduct(newProduct);
         this.alertS.generateToast({
@@ -142,4 +145,12 @@ export class NewProductComponent implements OnInit {
   validarPrecio() {
     return !!this.formProduct?.errors?.['priceError'];
   }
+
+  addCaducidad(){
+    this.caduca = !this.caduca
+  }
+
+validaExpired(){
+  return !!this.formProduct?.errors?.['expiredError']
+}
 }

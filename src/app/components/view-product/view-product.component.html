@@ -1,45 +1,34 @@
-<ion-content>
-  <ion-header>
-    <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" fill="clear">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ product.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-      <ion-text class="ion-text-center" color="dark">
-        <h3>Nombre del producto </h3>
-      </ion-text>
-
-      <ion-buttons slot="end">
-        <ion-button (click)="close()" fill="clear">
-          <ion-icon  slot="icon-only" name="close"></ion-icon>
-         </ion-button>
-      </ion-buttons>
-
-    </ion-toolbar>
-
-
-  </ion-header>
-
-  <ion-grid >
+<ion-content class="ion-text-center"> <!-- Centro todo el contenido horizontal y verticalmente -->
+  <ion-grid>
     <ion-row>
-      <ion-col offset="2" size="8">
-        <img src="https://img.freepik.com/foto-gratis/vista-lateral-mujer-comiendo-palillos_23-2149706743.jpg?t=st=1696259565~exp=1696260165~hmac=2e12045df451e5173f0a21e69c5c27c6c628156c54b51a8e45142887ceb5f3d4">
+      <ion-col size="12">
+        <ion-img [src]="product.image" alt="Imagen del producto"></ion-img>
       </ion-col>
     </ion-row>
     <ion-list>
       <ion-item>
-        <ion-label>Nombre: Maruchan Chile Piquin</ion-label>
+        <ion-label class="label-bold">Nombre:</ion-label>
+        <ion-label class="label-capitalized">{{ product.name }}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label>Descripcion: Son fideos </ion-label>
+        <ion-label class="label-bold">Precio:</ion-label>
+        <ion-label>{{ product.price | currency }}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label>Precio:{{17 | currency}}</ion-label>
+        <ion-label class="label-bold">Stock:</ion-label>
+        <ion-label>{{ product.stock }}</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-label>Stock: 200 </ion-label>
-      </ion-item>
-
     </ion-list>
   </ion-grid>
-
-
-
-  </ion-content>
+</ion-content>

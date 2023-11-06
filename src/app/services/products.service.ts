@@ -26,4 +26,9 @@ export class ProductsService {
   setNewProduct(products: any) {
     this.getNewProduct.emit(products);
   }
+
+  deleteProduct(productId: number) {
+    return this.http.delete(`${URL}/eliminarProducto/${productId}`);
+  }
+  
 }

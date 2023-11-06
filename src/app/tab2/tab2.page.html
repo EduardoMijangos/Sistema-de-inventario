@@ -1,48 +1,46 @@
-<app-header titulo="Mis productos" ></app-header>
+<app-header titulo="Mis productos"></app-header>
 
 <ion-content [fullscreen]="true">
 
-<ion-searchbar
-  mode="ios"
-  placeholder="Buscar producto"
-  (ionChange)="onSearchChange($event)"
-  [debounce]="250"
+  <ion-searchbar
+    mode="ios"
+    placeholder="Buscar producto"
+    (ionChange)="onSearchChange($event)"
+    [debounce]="250"
   ></ion-searchbar>
 
-  <ion-grid >
+  <ion-grid>
     <ion-row>
       <ion-col size="6" class="ion-text-center">
-          <ion-text >
-            <h1>Categorias</h1>
-          </ion-text>
+        <ion-text>
+          <h1>Categorías</h1>
+        </ion-text>
       </ion-col>
-      <ion-col size="6"  class="ion-margin-top">
+      <ion-col size="6" class="ion-margin-top">
         <ion-button (click)="openNewCategory()" expand="block" fill="clear">
           <ion-icon slot="end" name="add"></ion-icon>
-          Categoria
+          Categoría
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-
-
-<ion-card>
-  <ion-card-header class="ion-no-padding">
-   <ion-item lines="none" >
-    <ion-button *ngIf="vermas" (click)="verMas()" slot="end" fill="clear" class="ion-no-padding">
-      <ion-icon name="chevron-down-outline"></ion-icon>
-    </ion-button>
-    <ion-button *ngIf="!vermas" (click)="verMenos()" slot="end" fill="clear" class="ion-no-padding">
-      <ion-icon name="chevron-up-outline"></ion-icon>
-    </ion-button>
-   </ion-item>
-  </ion-card-header>
+  <ion-card>
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-button *ngIf="vermas" (click)="verMas()" slot="end" fill="clear" class="ion-no-padding">
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="!vermas" (click)="verMenos()" slot="end" fill="clear" class="ion-no-padding">
+          <ion-icon name="chevron-up-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-header>
     <ion-row>
-      <ion-col size="4" *ngFor="let cat of categories" >
-        <ion-button [color]="cat.color" class="ion-text-uppercase" expand="block"  shape="round">
+      <ion-col size="4" *ngFor="let cat of categories">
+        <ion-button [color]="cat.color" class="ion-text-uppercase" expand="block" shape="round">
           <p>
-            {{cat.name ? (cat.name.length > 12 ? cat.name.substr(0, 10) + '...' : cat.name) : ''}}
+            {{ cat.name ? (cat.name.length > 12 ? cat.name.substr(0, 10) + '...' : cat.name) : '' }}
           </p>
         </ion-button>
       </ion-col>
@@ -50,56 +48,55 @@
     <ion-row>
       <ion-col class="ion-text-center ion-padding" *ngIf="!categories.length" size="12">
         <ion-text color="primary">
-          <h3>Aun no hay ninguna categoria</h3>
+          <h3>Aún no hay ninguna categoría</h3>
         </ion-text>
-          </ion-col>
+      </ion-col>
     </ion-row>
-</ion-card>
+  </ion-card>
 
-<ion-grid >
-  <ion-row>
-    <ion-col size="6">
-      <ion-button (click)="openNewProduct()" expand="block" fill="clear" >
-        <ion-icon slot="start" name="add"></ion-icon>
-        Nuevo producto
-       </ion-button>
-    </ion-col>
-    <ion-col size="6">
-      <ion-button (click)="openNewSale()" expand="block" fill="clear" >
-        <ion-icon slot="start" name="add"></ion-icon>
-        Nueva venta
-       </ion-button>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button (click)="openNewProduct()" expand="block" fill="clear">
+          <ion-icon slot="start" name="add"></ion-icon>
+          Nuevo producto
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button (click)="openNewSale()" expand="block" fill="clear">
+          <ion-icon slot="start" name="add"></ion-icon>
+          Nueva venta
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-
-
-
-<ion-card>
-  <ion-list >
-    <ion-item lines="full" *ngFor="let p of products">
-      <ion-thumbnail (click)="openViewProduct()"  slot="start">
-        <img  alt="Silhouette of mountains" [src]="p.image" />
-      </ion-thumbnail>
-      <ion-label>
-        {{p.name}}
-        <p><b>Stock:</b> {{p.stock}}</p>
-        <p><b>Precio:</b> {{p.price | currency}} </p>
-      </ion-label>
-      <ion-button (click)="onClick()" fill="clear">
-        <ion-icon color="primary"  slot="icon-only" name="create"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear">
-        <ion-icon color="danger"   slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
-</ion-card>
-
-
-
-
-
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="4" size-sm="6" size-xs="12" *ngFor="let p of products">
+          <ion-list>
+            <ion-item lines="full">
+              <ion-thumbnail (click)="openViewProduct(p)" slot="start">
+                <img alt="Silhouette of mountains" [src]="p.image" />
+              </ion-thumbnail>
+              <ion-label>
+                {{ p.name ? (p.name.length > 12 ? p.name.substr(0, 10) + '...' : p.name) : '' }}
+                <p><b>Stock:</b> {{ p.stock }}</p>
+                <p><b>Precio:</b> {{ p.price | currency }}</p>
+              </ion-label>
+              <ion-button (click)="onClick()" fill="clear">
+                <ion-icon color="primary" slot="icon-only" name="create"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" (click)="deleteProduct(p.id)">
+                <ion-icon color="danger" slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+  
 
 </ion-content>

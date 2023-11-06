@@ -97,13 +97,20 @@
              El precio de venta es obligatorio </small>
              <small *ngIf="validarPrecio()" style="color: red;"> El precio de venta debe de ser mayor</small>
       </ion-col>
-      <ion-col size="12">
+      <ion-col size="6">
+        <ion-button  expand="block" shape="round" (click)="addCaducidad()">
+          {{caduca? 'Quitar caducidad': 'Agregar Caducidad'}}
+        </ion-button>
+        </ion-col>
+        <ion-col size="6" *ngIf="caduca">
         <ion-label >Fecha de vencimiento</ion-label>
         <ion-input
         formControlName="expired"
         type="date"
            fill="outline"
            placeholder=" Vencimiento"></ion-input>
+           <small *ngIf="validaExpired()" style="color: red;"> La fecha no debe de ser anterior</small>
+
       </ion-col>
     </ion-row>
     <ion-button type="submit"  expand="block"  >
