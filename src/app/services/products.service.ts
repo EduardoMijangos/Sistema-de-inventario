@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 const URL = 'http://localhost:8000/api';
 
@@ -22,6 +23,11 @@ export class ProductsService {
     return this.http.get(`${URL}/productos`);
   }
 
+  // Obtener un producto por su id
+  getProductById(productId: number): Observable<any> {
+    return this.http.get(`${URL}/productos/${productId}`);
+  }
+
   // Emisor para el nuevo producto
   setNewProduct(products: any) {
     this.getNewProduct.emit(products);
@@ -30,5 +36,9 @@ export class ProductsService {
   deleteProduct(productId: number) {
     return this.http.delete(`${URL}/eliminarProducto/${productId}`);
   }
-  
+
+  updateProduct(datos: any, id: number){
+    return this.http.post(`${URL}/actualizarProducto/${id}`, datos);
+  }
+
 }

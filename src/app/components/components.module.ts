@@ -7,6 +7,7 @@ import { ViewProductComponent } from './view-product/view-product.component';
 import { HeaderComponent } from './header/header.component';
 import { NewSaleComponent } from './new-sale/new-sale.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
+import { FilterProductsComponent } from './filter-products/filter-products.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { NewCategoryComponent } from './new-category/new-category.component';
     HeaderComponent,
     NewSaleComponent,
     NewCategoryComponent,
+    FilterProductsComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { NewCategoryComponent } from './new-category/new-category.component';
     ViewProductComponent,
     NewCategoryComponent,
     HeaderComponent,
-    NewSaleComponent
+    NewSaleComponent,
+    FilterProductsComponent
   ]
 })
 export class ComponentsModule { }

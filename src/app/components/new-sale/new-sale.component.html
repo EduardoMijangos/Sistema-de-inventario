@@ -22,18 +22,26 @@
   mode="ios"
   placeholder="Buscar producto"
   [debounce]="250"
+  (ionChange)="showProduct($event)"
   ></ion-searchbar>
+
+  <ion-chip color="{{color}}" *ngFor="let sp of productsSearch">{{sp.data.item.name}}</ion-chip>
+
       </ion-col>
       <ion-col size="12">
         <ion-label >Cantidad</ion-label>
-        <ion-input
+        <form [formGroup]="formCSale">
+        <ion-input formControlName="amount"
            type="number"
            fill="outline"
            placeholder="Cantidad de productos"></ion-input>
+          </form>
+
+          <small class="colorSmall" color="danger" *ngIf="validarStock()">El Stockd debe ser mayor a 0</small>
       </ion-col>
     </ion-row>
 
-    <ion-button  expand="block"  >
+    <ion-button (click)="saveSale()"  expand="block"  >
      Crear Venta
     </ion-button>
   </ion-grid>
@@ -41,4 +49,3 @@
 
 
 </ion-content>
-

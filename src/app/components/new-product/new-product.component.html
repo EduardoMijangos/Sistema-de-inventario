@@ -3,7 +3,7 @@
     <ion-toolbar>
 
       <ion-text class="ion-text-center" color="dark">
-        <h3>Nuevo producto </h3>
+        <h3>      {{edit ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
       </ion-text>
 
       <ion-buttons slot="end">
@@ -113,9 +113,10 @@
 
       </ion-col>
     </ion-row>
-    <ion-button type="submit"  expand="block"  >
-     Guardar
+    <ion-button type="submit" expand="block" (click)="addEditar()">
+      {{edit ? 'Editar' : 'Guardar'}}
     </ion-button>
+    
 
   </form>
   </ion-grid>

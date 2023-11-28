@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -15,19 +15,32 @@ import { priceValid } from 'src/app/validators/price.Validators'; // Renombré e
 })
 export class NewProductComponent implements OnInit {
   imgProduct = './assets/no-product-image.png';
-  currentFile: Blob[] = []; // Cambié el tipo de "any[]" a "Blob[]"
+  currentFile: any[] = [];
   categorias: any[] = [];
   formProduct!: FormGroup;
   caduca: boolean = false;
+  edit: boolean = false;
+  productId = 0;
 
   constructor(
     private modalCtrl: ModalController,
     private compressImg: NgxImageCompressService,
     private fb: FormBuilder,
     private categoryService: CategoriesService,
-    private _productService: ProductsService,
-    private alertS: AlertsService
+    private productService: ProductsService,
+    private alertS: AlertsService,
+    private _nParams: NavParams
   ) {
+    let info = this._nParams.get('datakey');
+    console.log(info);
+
+    if (info) {
+      this.edit = true;
+      this.productId = info.id; // Asigna el ID del producto
+      this.imgProduct = info.image;
+      this.titulo = 'Editar Producto';
+    }
+    console.log(info);
     this.getCategorias();
     this.formProduct = this.fb.group({
       name: [
@@ -47,8 +60,15 @@ export class NewProductComponent implements OnInit {
     },
     {
       validators: [priceValid, caducidadValid],
+
     });
+    this.formProduct.reset(info);
   }
+
+    addEditar(){
+    this.edit = !this.edit;
+    
+}
 
   getCategorias() {
     this.categoryService.getCategories().subscribe((resp: any) => {
@@ -57,6 +77,7 @@ export class NewProductComponent implements OnInit {
   }
 
   ngOnInit() {}
+  titulo = 'Nuevo Producto';
 
   imageProduct(ev: any) {
     console.log(ev);
@@ -108,38 +129,53 @@ export class NewProductComponent implements OnInit {
   }
 
   submit() {
-  if (this.formProduct.valid) {
+    console.log(this.formProduct.errors);
     const formdata = new FormData();
-    formdata.append('image', this.currentFile[0]);
-    const data = this.formProduct.getRawValue();
-
-    if(this.formProduct.invalid) {
-      this.formProduct.markAllAsTouched();
-      return;
-    }
-
+    let data = this.formProduct.getRawValue();
     for (const dataKey in data) {
       formdata.append(dataKey, data[dataKey]);
     }
-
-    this._productService.newProduct(formdata).subscribe((newProduct) => {
-      console.log('Nuevo producto:', newProduct); // Verifica los datos del nuevo producto
-      // this._productService.setNewProduct(newProduct); 
-      if (newProduct) {
-        this._productService.setNewProduct(newProduct);
-        this.alertS.generateToast({
-          duration: 800,
-          color: 'success',
-          icon: 'home',
-          message: 'Producto creado',
-          position: 'top',
-        });
-      }
-    });
-  } else {
-    console.log('El formulario no es válido');
+    if (this.currentFile) {
+      formdata.append('image', this.currentFile[0]);
+    }
+    console.log('Formdata', formdata);
+    if (this.edit) {
+      console.log('Actualizar producto');
+      this.productService.newProduct(formdata).subscribe((resp: any) => {
+        console.log(resp);
+        if (resp) {
+          this.productService.setNewProduct(resp);
+          this.alertS.generateToast({
+            duration: 2000,
+            color: 'success',
+            icon: 'checkmark-circle',
+            message: 'Producto creado',
+            position: 'top',
+          });
+          this.modalCtrl.dismiss();
+          this.formProduct.reset();
+        }
+      });
+    } else {
+      this.productService.updateProduct(formdata, this.productId).subscribe(
+        (resp: any) => {
+          console.log(resp);
+          if (resp) {
+            this.productService.setNewProduct(resp);
+            this.alertS.generateToast({
+              duration: 2000,
+              color: 'success',
+              icon: 'checkmark-circle',
+              message: 'Producto actualizado',
+              position: 'top',
+            });
+            this.modalCtrl.dismiss();
+            this.formProduct.reset();
+          }
+        }
+      );
+    }
   }
-}
 
 
   validarPrecio() {
@@ -149,6 +185,7 @@ export class NewProductComponent implements OnInit {
   addCaducidad(){
     this.caduca = !this.caduca
   }
+
 
 validaExpired(){
   return !!this.formProduct?.errors?.['expiredError']

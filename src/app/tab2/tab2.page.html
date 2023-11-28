@@ -85,7 +85,7 @@
                 <p><b>Stock:</b> {{ p.stock }}</p>
                 <p><b>Precio:</b> {{ p.price | currency }}</p>
               </ion-label>
-              <ion-button (click)="onClick()" fill="clear">
+              <ion-button (click)="openEditProduct(p)" fill="clear">
                 <ion-icon color="primary" slot="icon-only" name="create"></ion-icon>
               </ion-button>
               <ion-button fill="clear" (click)="deleteProduct(p.id)">

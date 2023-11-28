@@ -1,0 +1,5 @@
+<ion-list>
+  <ion-item detail="true" *ngFor="let p of products" (click)="selectProduct(p)">
+    {{p.name}}  
+  </ion-item>
+</ion-list>

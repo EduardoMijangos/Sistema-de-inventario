@@ -70,12 +70,11 @@ export class Tab2Page implements OnInit {
   getProducts() {
     this._productService.getProducts().subscribe((resp: any) => {
       console.log('Productos', resp);
-      this.filtroproducts = resp;
       this.products = resp;
+      this.products.reverse();
     });
   }
 
-  categorias = ['Abarrotes', 'Frutas y verduras', 'Limpieza', 'Vinos y licores', 'Especias', 'Golosinas'];
 
   onSearchChange(event: any) {
     // Handle search change here
@@ -90,6 +89,7 @@ export class Tab2Page implements OnInit {
     });
     await modal.present();
   }
+
 
   async openNewSale() {
     const modal = await this.modalCtrl.create({
@@ -153,6 +153,19 @@ export class Tab2Page implements OnInit {
     );
   }
   
+  async openEditProduct(product: any){
+    const modal = await this.modalCtrl.create({
+      component: NewProductComponent,
+      mode: 'ios',
+      componentProps:
+      {
+        datakey: product
+      },
+      initialBreakpoint: 0.9,
+      backdropDismiss: false,
+    });
+    await modal.present();
+  }
   
   
 }
