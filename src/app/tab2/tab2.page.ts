@@ -19,7 +19,7 @@ export class Tab2Page implements OnInit {
   products: any[] = [];
   vermas = true;
   filtrocategories: any[] = [];
-  filtroproducts: any = [];
+  filtroproducts: any[] = [];
   caduca: boolean = false;
 
   constructor(
@@ -31,6 +31,7 @@ export class Tab2Page implements OnInit {
     this._categoryService.getNewCategory.subscribe((category: any) => {
       if (category) {
         this.categories.push(category);
+        this.filtrocategories.push(category); // Agregar la categoría al filtro
       }
     });
 
@@ -38,6 +39,7 @@ export class Tab2Page implements OnInit {
       if (product) {
         this.getProducts();
         this.products.push(product);
+        this.filtrarCat(); // Refiltrar productos cuando se agrega uno nuevo
       }
     });
   }
@@ -57,8 +59,16 @@ export class Tab2Page implements OnInit {
     this.categories = this.categories.slice(0, 6);
   }
 
+  filtrarCat(id?: number) {
+    if (id !== undefined) {
+      this.filtroproducts = this.products.filter(product => product.category_id === id);
+    } else {
+      // Si no se selecciona ninguna categoría, mostrar todos los productos
+      this.filtroproducts = [...this.products];
+    }
+  }
+
   getCategorias() {
-    this.categories = [];
     this._categoryService.getCategories().subscribe((resp: any) => {
       console.log('Categoría', resp);
       this.filtrocategories = resp;
@@ -72,9 +82,9 @@ export class Tab2Page implements OnInit {
       console.log('Productos', resp);
       this.products = resp;
       this.products.reverse();
+      this.filtrarCat(); // Filtrar productos cuando se cargan
     });
   }
-
 
   onSearchChange(event: any) {
     // Handle search change here
@@ -89,7 +99,6 @@ export class Tab2Page implements OnInit {
     });
     await modal.present();
   }
-
 
   async openNewSale() {
     const modal = await this.modalCtrl.create({
@@ -140,11 +149,11 @@ export class Tab2Page implements OnInit {
           message: 'Producto eliminado con éxito',
           position: 'top',
         });
-        
-  
+
         // Puedes actualizar la lista de productos para reflejar el cambio en la interfaz
         // Por ejemplo, eliminar el producto de la lista local
         this.products = this.products.filter(product => product.id !== productId);
+        this.filtrarCat(); // Refiltrar productos después de eliminar
       },
       (error) => {
         // Manejar errores aquí
@@ -152,13 +161,12 @@ export class Tab2Page implements OnInit {
       }
     );
   }
-  
-  async openEditProduct(product: any){
+
+  async openEditProduct(product: any) {
     const modal = await this.modalCtrl.create({
       component: NewProductComponent,
       mode: 'ios',
-      componentProps:
-      {
+      componentProps: {
         datakey: product
       },
       initialBreakpoint: 0.9,
@@ -166,6 +174,4 @@ export class Tab2Page implements OnInit {
     });
     await modal.present();
   }
-  
-  
 }

@@ -38,15 +38,15 @@
     </ion-card-header>
     <ion-row>
       <ion-col size="4" *ngFor="let cat of categories">
-        <ion-button [color]="cat.color" class="ion-text-uppercase" expand="block" shape="round">
+        <ion-button [color]="cat.color" class="ion-text-uppercase" expand="block" shape="round" (click)="filtrarCat(cat.id)">
           <p>
             {{ cat.name ? (cat.name.length > 12 ? cat.name.substr(0, 10) + '...' : cat.name) : '' }}
           </p>
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-center ion-padding" *ngIf="!categories.length" size="12">
+    <ion-row *ngIf="!categories.length">
+      <ion-col class="ion-text-center ion-padding" size="12">
         <ion-text color="primary">
           <h3>Aún no hay ninguna categoría</h3>
         </ion-text>
@@ -73,8 +73,8 @@
 
   <ion-card>
     <ion-grid>
-      <ion-row>
-        <ion-col size-md="4" size-sm="6" size-xs="12" *ngFor="let p of products">
+      <ion-row *ngFor="let p of (filtrocategories.length > 0 ? filtroproducts : products)">
+        <ion-col size-md="4" size-sm="6" size-xs="12">
           <ion-list>
             <ion-item lines="full">
               <ion-thumbnail (click)="openViewProduct(p)" slot="start">
@@ -97,6 +97,5 @@
       </ion-row>
     </ion-grid>
   </ion-card>
-  
 
 </ion-content>
