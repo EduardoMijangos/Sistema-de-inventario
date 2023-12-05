@@ -1,7 +1,9 @@
 <app-header titulo="Mis Ventas"></app-header>
 
 <ion-content>
+
   <ion-card *ngFor="let venta of ventas">
+
     <ion-card-header>
       <ion-card-title>{{ venta.product_name }}</ion-card-title>
       <ion-card-subtitle>Cantidad: {{ venta.amount }}</ion-card-subtitle>
@@ -12,4 +14,9 @@
       <!-- No se incluye la referencia a la propiedad 'description' -->
     </ion-card-content>
   </ion-card>
+
+  <ion-button (click)="descargarPDF()" expand="block" fill="clear" shape="round">
+    Descargar pdf
+  </ion-button>
+
 </ion-content>

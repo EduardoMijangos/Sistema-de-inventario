@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { SalesService } from '../services/sales.service';
 import { ProductsService } from '../services/products.service';
+import { Platform } from '@ionic/angular';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-tab3',
@@ -13,7 +16,7 @@ export class Tab3Page {
 
   constructor(
     private saleS: SalesService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
   ) {
     this.saleS.getSale().subscribe((sales: any) => {
       const promises = sales.map(async (sale: any) => {
@@ -50,8 +53,10 @@ export class Tab3Page {
     });
   }
 
-  titulo = 'Reportes';
-
+  descargarPDF(){
+    this.saleS.generatePDF(this.ventas)
+  }
+  
   onSearchChange(event: any) {
     console.log('HOLA');
   }

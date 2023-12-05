@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { NewProductComponent } from '../components/new-product/new-product.component';
 import { ViewProductComponent } from '../components/view-product/view-product.component';
 import { NewSaleComponent } from '../components/new-sale/new-sale.component';
@@ -26,7 +26,8 @@ export class Tab2Page implements OnInit {
     private modalCtrl: ModalController,
     private _categoryService: CategoriesService,
     private _productService: ProductsService,
-    private alertS: AlertsService
+    private alertS: AlertsService,
+    private alertCtrl: AlertController
   ) {
     this._categoryService.getNewCategory.subscribe((category: any) => {
       if (category) {
@@ -85,10 +86,22 @@ export class Tab2Page implements OnInit {
       this.filtrarCat(); // Filtrar productos cuando se cargan
     });
   }
-
   onSearchChange(event: any) {
-    // Handle search change here
+    const searchTerm = event.target.value.toLowerCase();
+  
+    if (searchTerm.trim() !== '') {
+      // Si hay un término de búsqueda, filtrar los productos
+      this.filtroproducts = this.products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm) ||
+        product.stock.toString().includes(searchTerm) ||
+        product.price.toString().includes(searchTerm)
+      );
+    } else {
+      // Si el término de búsqueda está vacío, mostrar todos los productos
+      this.filtrarCat();
+    }
   }
+  
 
   async openNewProduct() {
     const modal = await this.modalCtrl.create({
@@ -111,17 +124,21 @@ export class Tab2Page implements OnInit {
   }
 
   async openViewProduct(product: any) {
+    // Obtén el nombre de la categoría a través del ID
+    const category = this.categories.find(cat => cat.id === product.category_id);
+  
     const modal = await this.modalCtrl.create({
       component: ViewProductComponent,
       componentProps: {
-        product: product // Pasa el producto seleccionado al componente de vista de producto.
+        product: { ...product, categoryName: category ? category.name : '' }
       },
       mode: 'ios',
       initialBreakpoint: 0.7,
     });
+  
     await modal.present();
   }
-
+  
   async openNewCategory() {
     const modal = await this.modalCtrl.create({
       component: NewCategoryComponent,
@@ -136,31 +153,49 @@ export class Tab2Page implements OnInit {
     console.log('¡Hola!');
   }
 
-  deleteProduct(productId: number) {
-    // Llamada a la función de servicio que envía la solicitud DELETE con el ID del producto
-    this._productService.deleteProduct(productId).subscribe(
-      (response) => {
-        // Manejar la respuesta exitosa aquí
-        console.log('Producto eliminado con éxito', response);
-        this.alertS.generateToast({
-          duration: 800,
-          color: 'danger',
-          icon: 'trash-outline',
-          message: 'Producto eliminado con éxito',
-          position: 'top',
-        });
-
-        // Puedes actualizar la lista de productos para reflejar el cambio en la interfaz
-        // Por ejemplo, eliminar el producto de la lista local
-        this.products = this.products.filter(product => product.id !== productId);
-        this.filtrarCat(); // Refiltrar productos después de eliminar
-      },
-      (error) => {
-        // Manejar errores aquí
-        console.error('Error al eliminar el producto', error);
-      }
-    );
+  async deleteProduct(productId: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar eliminación',
+      mode: 'ios',
+      message: '¿Seguro que deseas eliminar este producto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (cancel) => {
+            console.log('Cancelado');
+          }
+        }, {
+          text: 'Sí',
+          handler: () => {
+            // Llamada a la función de servicio que envía la solicitud DELETE con el ID del producto
+            this._productService.deleteProduct(productId).subscribe(
+              (response) => {
+                // Manejar la respuesta exitosa aquí
+                console.log('Producto eliminado con éxito', response);
+                this.alertS.generateToast({
+                  duration: 800,
+                  color: 'danger',
+                  icon: 'trash-outline',
+                  message: 'Producto eliminado con éxito',
+                  position: 'top',
+                });
+                this.products = this.products.filter(product => product.id !== productId);
+                  this.filtrarCat();
+              },
+              (error) => {
+                console.error('Error al eliminar el producto', error);
+              }
+            );
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
+  
 
   async openEditProduct(product: any) {
     const modal = await this.modalCtrl.create({
@@ -174,4 +209,10 @@ export class Tab2Page implements OnInit {
     });
     await modal.present();
   }
+
+  mostrarTodos() {
+    // Mostrar todos los productos
+    this.filtroproducts = [...this.products];
+  }
 }
+

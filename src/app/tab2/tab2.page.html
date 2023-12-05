@@ -72,9 +72,13 @@
   </ion-grid>
 
   <ion-card>
+    <ion-button (click)="mostrarTodos()" expand="block" fill="clear">
+      Mostrar Todos
+    </ion-button>
+  
     <ion-grid>
-      <ion-row *ngFor="let p of (filtrocategories.length > 0 ? filtroproducts : products)">
-        <ion-col size-md="4" size-sm="6" size-xs="12">
+      <ion-row>
+        <ion-col size-md="4" size-sm="6" size-xs="12" *ngFor="let p of (filtrocategories.length > 0 ? filtroproducts : products)">
           <ion-list>
             <ion-item lines="full">
               <ion-thumbnail (click)="openViewProduct(p)" slot="start">
@@ -97,5 +101,6 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+  
 
 </ion-content>
