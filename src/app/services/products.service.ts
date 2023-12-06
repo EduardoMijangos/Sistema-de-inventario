@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const URL = 'http://localhost:8000/api';
 
@@ -41,4 +41,10 @@ export class ProductsService {
     return this.http.post(`${URL}/actualizarProducto/${id}`, datos);
   }
 
+  private productImageSource = new BehaviorSubject<string | null>(null);
+  productImage$ = this.productImageSource.asObservable();
+
+  setProductImage(image: string | null) {
+    this.productImageSource.next(image);
+  }
 }

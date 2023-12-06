@@ -3,20 +3,37 @@
 <ion-content>
 
   <ion-card *ngFor="let venta of ventas">
-
     <ion-card-header>
       <ion-card-title>{{ venta.product_name }}</ion-card-title>
       <ion-card-subtitle>Cantidad: {{ venta.amount }}</ion-card-subtitle>
       <ion-card-subtitle>Ganancia: {{ venta.total }}</ion-card-subtitle>
     </ion-card-header>
-
-    <ion-card-content>
-      <!-- No se incluye la referencia a la propiedad 'description' -->
-    </ion-card-content>
   </ion-card>
 
+  <div *ngIf="mostSoldProducts.length > 0">
+    <h2>Productos más vendidos</h2>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="4" size-sm="6" size-xs="12" *ngFor="let product of mostSoldProducts">
+          <ion-card class="product-card">
+            <img [src]="product.product.image" *ngIf="product.product.image" alt="Product Image" />   
+            <ion-card-content>
+              <ion-card-title>ID: {{ product.product.id }}</ion-card-title>
+              <ion-card-subtitle>Nombre: {{ product.product.name }}</ion-card-subtitle>
+              <p>Precio: {{ product.product.price | currency }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  
   <ion-button (click)="descargarPDF()" expand="block" fill="clear" shape="round">
-    Descargar pdf
+    Descargar PDF
   </ion-button>
+
+  <div *ngIf="ventas.length === 0">
+    <p>No hay ventas disponibles.</p>
+  </div>
 
 </ion-content>

@@ -27,7 +27,7 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
-    "apexcharts": "^3.42.0",
+    "apexcharts": "^3.44.1",
     "ionicons": "^7.0.0",
     "moment": "^2.29.4",
     "ng-apexcharts": "^1.8.0",

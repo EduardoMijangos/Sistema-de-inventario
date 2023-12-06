@@ -214,5 +214,10 @@ export class Tab2Page implements OnInit {
     // Mostrar todos los productos
     this.filtroproducts = [...this.products];
   }
+
+  cargarImagen() {
+    const imageUrl = '...'; // Lógica para obtener la URL de la imagen
+    this._productService.setProductImage(imageUrl);
+  }
 }
 

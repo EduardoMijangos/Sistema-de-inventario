@@ -2,54 +2,69 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+import { ProductsService } from './products.service';
+import { Observable } from 'rxjs';
 
-const URL = 'http://localhost:8000/api';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalesService {
   getNewSale: EventEmitter<any> = new EventEmitter();
+  private apiUrl = 'http://localhost:8000/api'; // Configurar la URL base aquí
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private productsService: ProductsService
+  ) {}
 
-  postSale(data: any) {
-    return this.http.post(`${URL}/nuevoSale`, data);
+  postSale(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/nuevoSale`, data);
   }
 
-  getSale() {
-    return this.http.get(`${URL}/sales`);
+  getSale(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/sales`);
   }
 
-  setNewSale(sales: any) {
+  setNewSale(sales: any): void {
     this.getNewSale.emit(sales);
   }
 
-/*   async reporte(ventas:any[]){
-    function buildTableBody(data: any, colums: any){
-      const body = [];
-      data.forEach((row:any)=>{
-        const dataRow:any[]=[];
-        colums.forEach((colum:any)=> {
-          const obj = {
-            text: row['hola'],
-            style: 'subheader'
-          };
-          dataRow.push(obj);
-        });
-        body.push(dataRow);
-      });
-      const obj2 = [{ 
-        fontSiz:16, bold: true, text:'Total', style:'subheader' }, {
-        fontSiz:16, bold: true, text:'1500', style:'subheader' 
-      }];
-      body.push(obj2)
-    }
-  } */
+  async getMostSoldProducts(ventas: any[]): Promise<any[]> {
+    const promises = ventas.map(async (venta: any) => {
+      if (venta.product_id) {
+        try {
+          const product = await this.productsService.getProductById(venta.product_id).toPromise();
 
-  generatePDF(ventas: any) {
-    // Definir el contenido del PDF
+          const productDetails: any = {
+            id: product.id,
+            name: product.name,
+            category: product.category_id,
+            precio: product.price,
+          };
+
+          if (product.image) {
+            productDetails.image = product.image;
+          }
+
+          return {
+            ...venta,
+            productDetails,
+          };
+        } catch (error) {
+          console.error(`Error obteniendo detalles del producto para la venta con ID ${venta.id}:`, error);
+          return venta;
+        }
+      }
+
+      return venta;
+    });
+
+    return Promise.all(promises);
+  }
+
+  generatePDF(ventas: any[]): void {
     const documentDefinition = {
       content: [
         {
@@ -59,10 +74,10 @@ export class SalesService {
         {
           table: {
             headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto'],
+            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
             body: [
-              ['Nombre del producto', 'Precio', 'Cantidad', 'Ganancia'],
-              ...ventas.map( (p: any) => [ p.product.name, p.product.price, p.amount, p.profit])
+              ['Nombre del producto', 'Precio', 'Precio Venta', 'Cantidad', 'Ganancia'],
+              ...ventas.map((p: any) => [p.product.name, p.product.price, p.product.price_sale, p.amount, p.profit])
             ]
           }
         }
@@ -74,11 +89,8 @@ export class SalesService {
         }
       }
     };
-  
-    // Crear el PDF
+
     const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
-  
-    // Descargar el PDF
-    pdfDocGenerator.download('Reportede_productos.pdf');
-  } 
+    pdfDocGenerator.download('Reporte_de_productos.pdf');
+  }
 }
